@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+{%load static%}
+<body>
+
+<label for="input_date"> Укажите дату</label> <input id="input_date" type="date" onchange="updateFields(this.value)">
+
+<div id="show_currency">
+</div>
+
+</body>
+</html>
+
+<script src={%static "js/jquery.min.js" %}></script>
+<script>
+function updateFields(date) {
+    var data = {'date': date};
+    $.ajax({
+            url: '{% url 'get_currency' %}',
+            data: data,
+            dataType: 'json',
+            success: function(data) {
+<!--            console.log(data);-->
+            $("#show_currency").html('<h4> EUR: '+data["EUR"]+'</h4><h4> USD: '+data["USD"]+'</h4>');
+            },
+            error: function(data) {
+            $("#show_currency").html('<h1> '+data["error"]+'</h1>');
+            },
+          });
+}
+</script>
